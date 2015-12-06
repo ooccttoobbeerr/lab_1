@@ -5,6 +5,14 @@ import urllib2
 import re
 import os
 
+def name_of_files(name_file):
+    name = ''
+    if name_file[len(name_file) - 1] == '/':
+        name_file = name_file[:len(name_file) - 1]
+    for i in range(name_file.rfind('/') + 1, len(name_file)):
+        if name_file[i].isalnum() or name_file[i] == '.' or name_file[i] == '_' or name_file[i] == '-':
+            name += name_file[i]
+    return name
 
 def preserving_the_content_of_the_url(main_url, url, name_directory, my_dir):
     extra_contents = ''
@@ -29,6 +37,7 @@ def preserving_the_content_of_the_url(main_url, url, name_directory, my_dir):
             address = urls[i]
             if address[address.rfind('.') + 1:] in list_extensions:
                 name_file = address[address.rfind('/') + 1:]
+                name_file = name_of_files(name_file)
                 index = contents.find(address)
                 extra_contents = contents[: index] + './' + name_file + contents[index + len(address):]
                 contents = extra_contents
